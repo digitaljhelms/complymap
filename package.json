@@ -1,0 +1,28 @@
+{
+  "name": "htmlmap",
+  "version": "1.0.0",
+  "description": "Fetches, transforms, and serves a sitemap.xml as simple HTML page (for when XSLT can't be used).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Jeremy Helms <digitaljhelms@gmail.com>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digitaljhelms/htmlmap.git"
+  },
+  "engines": {
+    "node": ">=10.0.0 <11.0.0"
+  },
+  "dependencies": {
+    "node-json2html": "^1.2.0",
+    "request": "^2.88.0",
+    "xml2js": "^0.4.19",
+    "yargs": "^13.2.4"
+  },
+  "devDependencies": {
+    "eslint": "^6.0.1"
+  }
+}
