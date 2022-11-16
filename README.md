@@ -62,7 +62,10 @@ Note: To prevent a URL found in the fetched `sitemap.xml` from being rendered in
 
 Options must be passed after `npm run start -- `, prefixed with `--`, and a value preceeding an equal (`=`) symbol.
 
-|| Option || Default || Description ||
+
+
+| Option | Default | Description |
+| ------ | ------- | ----------- |
 | `root` | `urlset` | The root/top-level document node |
 | `entry` | `url` | The parent node for each URL |
 | `loc` | `loc` | The primary node containing each URL |
