@@ -68,7 +68,7 @@ Options must be passed after `npm run start -- `, prefixed with `--`, and a valu
 | ------ | ------- | ----------- |
 | `root` | `urlset` | The root/top-level document node |
 | `entry` | `url` | The parent node for each URL |
-| `loc` | `loc` | The primary node containing each URL |
+| `location` | `loc` | The primary node containing each URL |
 | `sortasc` | `loc` | What XML node to use for sorting (ascending) |
 | `sortdesc` | none | What XML node to use for sorting (descending) |
 | `timestamp` | none | To display the date/time stamp of last modified or published (if it exists in the XML) pass the value of the XML node itself (ex: `--dtstamp=lastmod`) |

@@ -14,7 +14,7 @@ const options = {
   url: argv.url,
   root: (argv.root || 'urlset'),
   entry: (argv.entry || 'url'),
-  loc: (argv.loc || 'loc'),
+  location: (argv.location || 'loc'),
   timestamp: argv.timestamp,
   sort: (argv.sortasc || argv.sortdesc || 'loc'),
   reverse: (argv.sortdesc ? true : false),
@@ -59,7 +59,7 @@ module.export = request.get(options, (err, res, body) => {
           const ignoreList = fs.readFileSync('ignore-list.txt').toString().split('\n')
 
           ignoreList.forEach(function (val) {
-            json = json.remove(options.loc, val)
+            json = json.remove(options.location, val)
           })
           console.log('httpmap: [JSON] Removing URLs found in ignore-list.txt file.')
         } catch (err) {
@@ -79,8 +79,8 @@ module.export = request.get(options, (err, res, body) => {
           // 'text': '(${' + options.timestamp + '} )',
           'html': [{
             '<>': 'a',
-            'href': '${' + options.loc + '}',
-            'html': '${' + options.loc + '}'
+            'href': '${' + options.location + '}',
+            'html': '${' + options.location + '}'
           }]
         },
         'template': {
