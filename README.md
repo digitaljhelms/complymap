@@ -1,12 +1,27 @@
 ## Usage
 
-`npm run start -- --url=http://www.example.com/sitemap.xml` would fetch `sitemap.xml`, transform the XML into a simple HTML page of links, and serve the output over HTTP port 3000.
+`npm run {function} --url==http://www.example.com/sitemap.xml`
+
+**Function**
+
+Two options are available:
+
+* `html`: `npm run html -- --url=http://www.example.com/sitemap.xml` will fetch `sitemap.xml`, transform the XML into a simple HTML page with links, and serve the output over HTTP port 3000
+* `text`: `npm run text -- --url=http://www.example.com/sitemap.xml` will fetch `sitemap.xml`, transform the XML into a plain text file URLs, and serve the output over HTTP port 3000
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
   <url>
     <loc>http://www.example.com/foo.html</loc>
+    <lastmod>2018-06-04</lastmod>
+  </url>
+  <url>
+    <loc>http://www.example.com/bar.html</loc>
+    <lastmod>2018-06-04</lastmod>
+  </url>
+  <url>
+    <loc>http://www.example.com/baz.html</loc>
     <lastmod>2018-06-04</lastmod>
   </url>
 </urlset>
@@ -23,11 +38,27 @@ The rendered HTML output:
   <body>
     <main>
       <ol>
-        <li><a href="http://www.example.com/foo.html">http://www.example.com/foo.html</a></li>
+        <li>
+          <a href="http://www.example.com/foo.html">http://www.example.com/foo.html</a>
+        </li>
+        <li>
+          <a href="http://www.example.com/bar.html">http://www.example.com/bar.html</a>
+        </li>
+        <li>
+          <a href="http://www.example.com/baz.html">http://www.example.com/baz.html</a>
+        </li>
       </ol>
     </main>
   </body>
 </html>
+```
+
+The rendered text output:
+
+```
+http://www.example.com/foo.html
+http://www.example.com/bar.html
+http://www.example.com/baz.html
 ```
 
 ## Custom XML Structure
@@ -60,9 +91,7 @@ Note: To prevent a URL found in the fetched `sitemap.xml` from being rendered in
 
 ## CLI Options
 
-Options must be passed after `npm run start -- `, prefixed with `--`, and a value preceeding an equal (`=`) symbol.
-
-
+Options must be passed after `npm run [html|text] -- `, prefixed with `--`, and a value preceeding an equal (`=`) symbol.
 
 | Option | Default | Description |
 | ------ | ------- | ----------- |

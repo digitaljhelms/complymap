@@ -11,6 +11,7 @@ if (!argv.url) {
 }
 
 const options = {
+  api: argv.api,
   url: argv.url,
   root: (argv.root || 'urlset'),
   entry: (argv.entry || 'url'),
@@ -47,7 +48,6 @@ module.export = request.get(options, (err, res, body) => {
   if (!err && res.statusCode == 200) {
     xml2js(body, function (err, result) {
       let json = JSON.parse(JSON.stringify(result))[options.root][options.entry]
-      // console.log(json)
 
       json.sort(sort_by(options.sort, options.reverse, function (a) {
         return (a ? a.toString().toUpperCase() : null )
@@ -58,7 +58,7 @@ module.export = request.get(options, (err, res, body) => {
         try {
           const ignoreList = fs.readFileSync('ignore-list.txt').toString().split('\n')
 
-          ignoreList.forEach(function (val) {
+          ignoreList.forEach(function(val) {
             json = json.remove(options.location, val)
           })
           console.log('httpmap: [JSON] Removing URLs found in ignore-list.txt file.')
@@ -67,58 +67,63 @@ module.export = request.get(options, (err, res, body) => {
         }
       }
 
-      const transform = {
-        'item': {
-          '<>': 'li',
-          'text': function(obj) {
-            if (options.timestamp && obj[options.timestamp]) {
-              // console.log(obj[options.timestamp].toString())
-              return '(' + obj[options.timestamp].toString() + ') '
-            }
-          },
-          // 'text': '(${' + options.timestamp + '} )',
-          'html': [{
-            '<>': 'a',
-            'href': '${' + options.location + '}',
-            'html': '${' + options.location + '}'
-          }]
-        },
-        'template': {
-          '<>': 'html',
-          'lang': 'en',
-          'html': [{
-            '<>': 'head',
+      let output = ''
+
+      if (!options.api) {
+        const transform = {
+          'item': {
+            '<>': 'li',
+            'text': function(obj) {
+              if (options.timestamp && obj[options.timestamp]) {
+                return '(' + obj[options.timestamp].toString() + ') '
+              }
+            },
             'html': [{
-              '<>': 'title',
-              'text': 'HTMLMAP',
-            },{
-              '<>': 'style',
-              'text': 'body { font-family: sans-serif; }'
+              '<>': 'a',
+              'href': '${' + options.location + '}',
+              'html': '${' + options.location + '}'
             }]
           },
-          {
-            '<>': 'body',
+          'template': {
+            '<>': 'html',
+            'lang': 'en',
             'html': [{
-              '<>': 'main',
+              '<>': 'head',
               'html': [{
-                '<>': 'ol',
-                'html': function () {
-                  return (json2html.render(json, transform.item))
-                }
+                '<>': 'title',
+                'text': 'HTMLMAP',
+              },{
+                '<>': 'style',
+                'text': 'body { font-family: sans-serif; }'
+              }]
+            },
+            {
+              '<>': 'body',
+              'html': [{
+                '<>': 'main',
+                'html': [{
+                  '<>': 'ol',
+                  'html': function () {
+                    return (json2html.render(json, transform.item))
+                  }
+                }]
               }]
             }]
-          }]
+          }
         }
+
+        output = json2html.render({}, transform.template)
+      } else {
+        json.forEach(function(val) {
+          output += val[options.location].toString() + '\n'
+        })
       }
 
-      const html = json2html.render({}, transform.template)
-      // console.log(html)
-
-      http.createServer(function (req, res) {
+      http.createServer(function(req, res) {
         res.writeHead(200, {
           'Content-Type': 'text/html'
         });
-        res.end(html)
+        res.end(output)
       }).listen(3000)
 
       console.log(`htmlmap: [HTTP] Listening on http://localhost:3000`)

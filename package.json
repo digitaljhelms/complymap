@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "html": "node index.js",
+    "text": "node index.js --api"
   },
   "author": "Jeremy Helms <digitaljhelms@gmail.com>",
   "license": "ISC",
