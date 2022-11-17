@@ -79,19 +79,22 @@ These arguments are useful for addressing differences in XML structure; for exam
 ```
 
 For the above structure, the following command arguments would be necessary:
-`npm run start -- --url=https://www.example.com/sitemap.xml --root=sitemapindex --entry=sitemap`
+
+```
+npm run start -- --url=https://www.example.com/sitemap.xml --root=sitemapindex --entry=sitemap
+```
 
 Additionally, `--sortasc` or `--sortdesc` could be used to sort by `pubDate`, `changefreq`, or `priority`.
 
 ---
 
-Note: To prevent a URL found in the fetched `sitemap.xml` from being rendered in the HTML output, use the `ignore-list.txt` file – a single, fully-qualified URL, per-line, with no EOF carriage return – and pass the `--ignore` option.
+Note: To omit URLs found in the fetched `sitemap.xml` from being rendered in the output, create an `ignore-list.txt` file that includes a single fully-qualified URL, per-line, with **no EOF carriage return** at the end of the file and pass the `--ignore` option in at runtime.
 
 ---
 
 ## CLI Options
 
-Options must be passed after `npm run [html|text] -- `, prefixed with `--`, and a value preceeding an equal (`=`) symbol.
+Options must be passed after `npm run {function} -- `, prefixed with `--`, and a value preceeding an equal (`=`) symbol.
 
 | Option | Default | Description |
 | ------ | ------- | ----------- |
@@ -100,9 +103,9 @@ Options must be passed after `npm run [html|text] -- `, prefixed with `--`, and 
 | `location` | `loc` | The primary node containing each URL |
 | `sortasc` | `loc` | What XML node to use for sorting (ascending) |
 | `sortdesc` | none | What XML node to use for sorting (descending) |
-| `timestamp` | none | To display the date/time stamp of last modified or published (if it exists in the XML) pass the value of the XML node itself (ex: `--dtstamp=lastmod`) |
+| `timestamp` | none | To display the date/time stamp of last modified or published (if it exists in the XML) pass the value of the XML node itself (ex: `--timestamp=lastmod`) |
 | `user` | none | Basic authentication username |
 | `pass` | none | Basic authentication password |
-| `ignore` | none | Remove URLs found in `ignore-list.txt` file |
+| `ignore` | none | Omit URLs found in `ignore-list.txt` file |
 
 Note: When using `sortasc` or `sortdesc` only one option can be passed; if both are passed, `sortasc` will take precedence and `sortdesc` will be ignored.
