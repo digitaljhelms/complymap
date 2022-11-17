@@ -2,6 +2,7 @@ const argv = require('yargs').argv
 const fs = require('fs')
 const http = require('http')
 const json2html = require('node-json2html')
+const pretty = require('pretty')
 const request = require('request')
 const xml2js = require('xml2js').parseString
 
@@ -10,16 +11,22 @@ if (!argv.url) {
   process.exit(1)
 }
 
+if (!argv.text && !argv.html) {
+  console.log('htmlmap: [ERR] Invalid output format provided, defaulting to HTML\n')
+}
+
 const options = {
-  api: argv.api,
+  format: (argv.text ? 'text' : 'html'),
   url: argv.url,
   root: (argv.root || 'urlset'),
   entry: (argv.entry || 'url'),
   location: (argv.location || 'loc'),
-  timestamp: argv.timestamp,
+  timestamp: (argv.timestamp || null),
   sort: (argv.sortasc || argv.sortdesc || 'loc'),
   reverse: (argv.sortdesc ? true : false),
-  ignore: (argv.ignore || false)
+  ignore: (argv.ignore || false),
+  save: (argv.save || false),
+  outputfile: (argv.save ? (argv.text ? 'sitemap.txt' : 'sitemap.html') : null)
 }
 
 if (argv.user && argv.pass) {
@@ -27,7 +34,8 @@ if (argv.user && argv.pass) {
     'Authorization': 'Basic ' + Buffer.from(argv.user + ':' + argv.pass).toString('base64'),
   }
 }
-console.log(options)
+
+console.log('htmlmap: [ARGS] Configuration being used\n', options, '\n')
 
 Array.prototype.remove = function (key, value) {
   const index = this.findIndex(obj => obj[key] === value);
@@ -44,6 +52,8 @@ const sort_by = (field, reverse, primer) => {
   return (a, b) => (a = key(a), b = key(b), reverse * ((a > b) - (b > a)))
 }
 
+console.log('htmlmap: [HTTP] Retrieving sitemap.xml\n')
+
 module.export = request.get(options, (err, res, body) => {
   if (!err && res.statusCode == 200) {
     xml2js(body, function (err, result) {
@@ -52,7 +62,7 @@ module.export = request.get(options, (err, res, body) => {
       json.sort(sort_by(options.sort, options.reverse, function (a) {
         return (a ? a.toString().toUpperCase() : null )
       }))
-      
+
       // 1 FQ URL per-line, no EOF carriage return
       if (options.ignore) {
         try {
@@ -69,7 +79,7 @@ module.export = request.get(options, (err, res, body) => {
 
       let output = ''
 
-      if (!options.api) {
+      if (options.format === 'html') {
         const transform = {
           'item': {
             '<>': 'li',
@@ -112,24 +122,31 @@ module.export = request.get(options, (err, res, body) => {
           }
         }
 
-        output = json2html.render({}, transform.template)
+        output = pretty(json2html.render({}, transform.template))
       } else {
         json.forEach(function(val) {
           output += val[options.location].toString() + '\n'
         })
       }
 
-      http.createServer(function(req, res) {
-        res.writeHead(200, {
-          'Content-Type': 'text/html'
-        });
-        res.end(output)
-      }).listen(3000)
+      if (options.save) {
+        fs.writeFile(options.outputfile, output.trim(), (err) => {
+          if (err) throw err;
+          console.log(`htmlmap: [SAVE] Output saved to ${options.outputfile}`)
+        })
+      } else {
+        http.createServer(function(req, res) {
+          res.writeHead(200, {
+            'Content-Type': 'text/html'
+          });
+          res.end(output)
+        }).listen(3000)
 
-      console.log(`htmlmap: [HTTP] Listening on http://localhost:3000`)
+        console.log('htmlmap: [SERV] Listening on http://localhost:3000')
+      }
     })
   } else {
-    // console.log(err)
+    console.log('htmlmap: [ERR] An error occurred')
     throw err
   }
 })

@@ -1,13 +1,15 @@
 ## Usage
 
-`npm run {function} --url==http://www.example.com/sitemap.xml`
+`npm run {output} --url==http://www.example.com/sitemap.xml`
 
-**Function**
+**Output**
 
 Two options are available:
 
 * `html`: `npm run html -- --url=http://www.example.com/sitemap.xml` will fetch `sitemap.xml`, transform the XML into a simple HTML page with links, and serve the output over HTTP port 3000
 * `text`: `npm run text -- --url=http://www.example.com/sitemap.xml` will fetch `sitemap.xml`, transform the XML into a plain text file URLs, and serve the output over HTTP port 3000
+
+Note: It is possible to pass the script output in as an option using `npm run start` as well, example: `npm run start -- --text --url=http://www.example.com/sitemap.xml` However, if this is used, and the output option is invalid (not `--html` or `--text`) the output will default to using `html`.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -63,7 +65,7 @@ http://www.example.com/baz.html
 
 ## Custom XML Structure
 
-`urlset` and `url` are the default nodes searched for in the XML structure, however, additional CLI arguments can be specified.
+`urlset` and `url` are the default nodes searched for in the XML structure, however, additional CLI options can be specified.
 
 These arguments are useful for addressing differences in XML structure; for example:
 
@@ -107,5 +109,6 @@ Options must be passed after `npm run {function} -- `, prefixed with `--`, and a
 | `user` | none | Basic authentication username |
 | `pass` | none | Basic authentication password |
 | `ignore` | none | Omit URLs found in `ignore-list.txt` file |
+| `save` | none | Saves the output to `sitemap.html` or `sitemap.txt` based on the function being executed |
 
 Note: When using `sortasc` or `sortdesc` only one option can be passed; if both are passed, `sortasc` will take precedence and `sortdesc` will be ignored.

@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "html": "node index.js",
-    "text": "node index.js --api"
+    "start": "node index.js",
+    "html": "node index.js --html",
+    "text": "node index.js --text"
   },
   "author": "Jeremy Helms <digitaljhelms@gmail.com>",
   "license": "ISC",
@@ -19,6 +20,7 @@
   },
   "dependencies": {
     "node-json2html": "^2.2.2",
+    "pretty": "^2.0.0",
     "request": "^2.88.2",
     "xml2js": "^0.4.23",
     "yargs": "^13.3.2"
