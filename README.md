@@ -1,6 +1,6 @@
 ## Usage
 
-`npm run {output} --url==http://www.example.com/sitemap.xml`
+`npm run {output} --url=http://www.example.com/sitemap.xml`
 
 ### Output
 
