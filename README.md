@@ -2,14 +2,11 @@
 
 `npm run {output} --url==http://www.example.com/sitemap.xml`
 
-**Output**
+### Output
 
-Two options are available:
+Two output options are available: `html` and `text`
 
-* `html`: `npm run html -- --url=http://www.example.com/sitemap.xml` will fetch `sitemap.xml`, transform the XML into a simple HTML page with links, and serve the output over HTTP port 3000
-* `text`: `npm run text -- --url=http://www.example.com/sitemap.xml` will fetch `sitemap.xml`, transform the XML into a plain text file URLs, and serve the output over HTTP port 3000
-
-Note: It is possible to pass the script output in as an option using `npm run start` as well, example: `npm run start -- --text --url=http://www.example.com/sitemap.xml` However, if this is used, and the output option is invalid (not `--html` or `--text`) the output will default to using `html`.
+Each output option is outlined below using the following example XML input.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -28,6 +25,12 @@ Note: It is possible to pass the script output in as an option using `npm run st
   </url>
 </urlset>
 ```
+
+Note: It is possible to pass the script output in as an option using `npm run start` as well, example: `npm run start -- --text --url=http://www.example.com/sitemap.xml` However, if this is used, and the output option is invalid (not `--html` or `--text`) the output will default to using `html`.
+
+#### `html`
+
+`npm run html -- --url=http://www.example.com/sitemap.xml` will fetch `sitemap.xml`, transform the XML into a simple HTML page with links, and serve the output over HTTP port 3000.
 
 The rendered HTML output:
 
@@ -54,6 +57,10 @@ The rendered HTML output:
   </body>
 </html>
 ```
+
+####  `text`
+
+`npm run text -- --url=http://www.example.com/sitemap.xml` will fetch `sitemap.xml`, transform the XML into a plain text file URLs, and serve the output over HTTP port 3000.
 
 The rendered text output:
 
