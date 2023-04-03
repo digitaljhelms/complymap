@@ -26,6 +26,6 @@
     "yargs": "^17.7.1"
   },
   "devDependencies": {
-    "eslint": "^8.35.0"
+    "eslint": "^8.37.0"
   }
 }
