@@ -22,7 +22,7 @@
     "node-json2html": "^2.2.3",
     "pretty": "^2.0.0",
     "request": "^2.88.2",
-    "xml2js": "^0.4.23",
+    "xml2js": "^0.5.0",
     "yargs": "^17.7.1"
   },
   "devDependencies": {
